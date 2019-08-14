@@ -35,7 +35,7 @@ impl Service for Echo {
         futures::future::ok(match(req.method(), req.path()) {
             (&Get, "/data") => {
                 let b = heavy_work().into_bytes();
-                Response::new().with_header(CoutentLength(b.len() as u64)).with_body(b)
+                Response::new().with_header(ContentLength(b.len() as u64)).with_body(b)
             }
             _ => Response::new().with_status(StatusCode::NotFound),
         })
