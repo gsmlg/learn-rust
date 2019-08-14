@@ -10,16 +10,16 @@ use tokio_core::reactor::Core;
 use tokio_core::net::TcpListener;
 use std::{thread, time};
 use std::net::SocketAddr;
-use std::sysc::Arc;
+use std::sync::Arc;
 use futures::future::FutureResult;
 use hyper::{Get, StatusCode};
 use hyper::header::ContentLength;
 use hyper::server::{Http, Service, Request, Response};
 
 fn heavy_work() -> String {
-    let duration = time::Duration::form_millis(200);
+    let duration = time::Duration::from_millis(200);
     thread::sleep(duration);
-    "done".to_string();
+    "done".to_string()
 }
 
 #[derive(Clone, Copy)]
@@ -35,7 +35,7 @@ impl Service for Echo {
         futures::future::ok(match(req.method(), req.path()) {
             (&Get, "/data") => {
                 let b = heavy_work().into_bytes();
-                Response::new().with_header(CountentLength(b.len() as u64)).with_body(b)
+                Response::new().with_header(CoutentLength(b.len() as u64)).with_body(b)
             }
             _ => Response::new().with_status(StatusCode::NotFound),
         })
