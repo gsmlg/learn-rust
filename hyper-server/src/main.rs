@@ -16,7 +16,7 @@ fn heavy_work() -> String {
 #[derive(Clone, Copy)]
 struct Echo;
 
-impl Service fro Echo {
+impl Service for Echo {
     type Request = Request;
     type Response = Response;
     type Error = hyper::Error;
@@ -26,7 +26,7 @@ impl Service fro Echo {
     // We only handle GET requests on /data and ignore everything else
     // returning a HTTP 404
     fn call(&self, req: Request) -> Self::Future {
-        futures::future:ok(match(req.method(), req.path())
+        futures::future::ok(match(req.method(), req.path())
         {
             (&Get, "/data") => {
                 let b = heavy_work().into_bytes();
@@ -34,7 +34,8 @@ impl Service fro Echo {
                     .with_header(ContentLength(b.len() as u64))
                     .with_body(b)
             }
-            _ => Response::new().with_status(StatusCode::NotFount),})
+            _ => Response::new().with_status(StatusCode::NotFound),
+        })
     }
 }
 
